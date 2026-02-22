@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VoxelRay Engine - Shader Configuration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f9f506",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#23220f",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom range slider styling */
+        input[type=range] {
+            -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+            width: 100%; /* Specific width is required for Firefox. */
+            background: transparent; /* Otherwise white in Chrome */
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+        }
+        input[type=range]:focus {
+            outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+        }
+        input[type=range]::-ms-track {
+            width: 100%;
+            cursor: pointer;
+            /* Hides the slider so custom styles can be added */
+            background: transparent; 
+            border-color: transparent;
+            color: transparent;
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* Split screen handle simulation */
+        .split-handle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2px;
+            height: 100vh;
+            background-color: #f9f506;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-900 font-display overflow-hidden h-screen w-screen flex flex-col">
+<!-- Background Layer (Simulated Split Screen) -->
+<div class="absolute inset-0 z-0 flex w-full h-full pointer-events-none">
+<!-- Left: Vanilla -->
+<div class="w-1/2 h-full relative overflow-hidden bg-slate-200">
+<img class="absolute inset-0 w-full h-full object-cover opacity-80" data-alt="Pixelated voxel landscape with basic flat lighting, grassy hills and blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn7FuaPuRr3zZ5BH5KhJltG6t9nxe7Pr9KgJqNxPZ3wGh-GSjDgAPSGbT9vFDxq4GwiC4fn15vGpmttUvByrms78YTtvr9XRPQ0cs_Xlvtxa9wao4htRlmZ_imMSvLqpaJhUtDBKE7Zeg5vzcjNditUt0rNduGsmCHPafy38__9pgMikkew6sDwi1yzY27EQx6p-9CFwM4kvdDZbaQyptbAI8tUT44WydbkgmUOib363IjPAYS7UTX55C2YgHonfdDgzdGKhDT-vc"/>
+<div class="absolute top-24 left-8 bg-black/50 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                Vanilla
+            </div>
+</div>
+<!-- Right: RTX On -->
+<div class="w-1/2 h-full relative overflow-hidden bg-slate-800">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="Hyper-realistic voxel landscape with ray-traced lighting, reflections on water and detailed textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5cb-ySVkFcfJ9LltRwQGZAnIsCbyXdUVWPrvhfbqv3jSy0k9kpNM4k415e1A48ipozNcIsSZiKlU1hRNYg0zfLdB3C5uOIWdT5U9w7jnrid-puj2Rxwh8dihg0SDoxrvcrgfVG76TPCUNzbL22ACZqi93pYdKqrLpRiD5VtyEqR4pQVYOmxCuJwoAcSJLfFA-itvkzeDIlDQ8ZtnDuGijaakyPY05c6ylur_zOVrRyzRaLnhzGOgZMy-qnmA7PKOgv-sk5xqHEeM"/>
+<div class="absolute top-24 right-8 bg-primary text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                VoxelRay ON
+            </div>
+</div>
+<!-- Center Handle -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 split-handle h-12 w-12 bg-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.2)] cursor-ew-resize border-4 border-primary">
+<span class="material-symbols-outlined text-slate-900 text-lg">code</span>
+</div>
+</div>
+<!-- UI Overlay Layer -->
+<div class="relative z-10 flex flex-col h-full w-full pointer-events-none">
+<!-- Header -->
+<header class="pointer-events-auto w-full glass-panel border-b border-white/20 px-8 py-4 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-4 text-slate-900">
+<div class="size-8 rounded-lg bg-primary flex items-center justify-center text-slate-900">
+<span class="material-symbols-outlined">view_in_ar</span>
+</div>
+<div>
+<h2 class="text-slate-900 text-lg font-bold leading-tight tracking-tight">VoxelRay Engine</h2>
+<p class="text-xs text-slate-500 font-medium tracking-wide uppercase">Config v.2.4</p>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-2 bg-slate-100/50 p-1 rounded-full backdrop-blur-md border border-white/30">
+<a class="text-slate-500 hover:text-slate-900 hover:bg-white px-5 py-2 rounded-full text-sm font-semibold transition-all" href="#">General</a>
+<a class="text-slate-900 bg-white shadow-sm px-5 py-2 rounded-full text-sm font-semibold transition-all" href="#">Graphics</a>
+<a class="text-slate-500 hover:text-slate-900 hover:bg-white px-5 py-2 rounded-full text-sm font-semibold transition-all" href="#">Audio</a>
+<a class="text-slate-500 hover:text-slate-900 hover:bg-white px-5 py-2 rounded-full text-sm font-semibold transition-all" href="#">Controls</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex flex-col items-end mr-4">
+<span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Est. VRAM Usage</span>
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full w-[72%] bg-primary"></div>
+</div>
+<span class="text-xs font-mono font-bold text-slate-900">7.2GB</span>
+</div>
+</div>
+<button class="flex items-center gap-2 justify-center rounded-full h-10 pl-3 pr-4 bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors shadow-lg">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+<span>Benchmark</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full bg-white text-slate-900 hover:bg-primary transition-colors shadow-md">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 w-full flex items-center justify-start p-8 md:p-12 overflow-hidden">
+<!-- Settings Panel -->
+<div class="pointer-events-auto w-full max-w-[480px] glass-panel rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] flex flex-col max-h-full overflow-hidden border border-white/50">
+<!-- Panel Header with Presets -->
+<div class="p-6 pb-4 border-b border-slate-200/50">
+<div class="flex flex-col gap-1 mb-6">
+<h1 class="text-3xl font-black text-slate-900 tracking-tight leading-none">Shader Config</h1>
+<p class="text-slate-500 text-sm font-medium">Fine-tune ray tracing and texture fidelity.</p>
+</div>
+<!-- Preset Selector -->
+<div class="w-full bg-slate-100/80 p-1.5 rounded-full flex justify-between relative shadow-inner">
+<label class="cursor-pointer flex-1 text-center relative z-10 group">
+<input class="peer sr-only" name="preset" type="radio"/>
+<span class="block w-full py-1.5 text-xs font-bold text-slate-500 peer-checked:text-slate-900 transition-colors">Low</span>
+<span class="absolute inset-0 bg-white rounded-full shadow-sm scale-90 opacity-0 peer-checked:opacity-100 peer-checked:scale-100 transition-all -z-10"></span>
+</label>
+<label class="cursor-pointer flex-1 text-center relative z-10 group">
+<input class="peer sr-only" name="preset" type="radio"/>
+<span class="block w-full py-1.5 text-xs font-bold text-slate-500 peer-checked:text-slate-900 transition-colors">Med</span>
+<span class="absolute inset-0 bg-white rounded-full shadow-sm scale-90 opacity-0 peer-checked:opacity-100 peer-checked:scale-100 transition-all -z-10"></span>
+</label>
+<label class="cursor-pointer flex-1 text-center relative z-10 group">
+<input checked="" class="peer sr-only" name="preset" type="radio"/>
+<span class="block w-full py-1.5 text-xs font-bold text-slate-500 peer-checked:text-slate-900 transition-colors">High</span>
+<span class="absolute inset-0 bg-white rounded-full shadow-sm scale-90 opacity-0 peer-checked:opacity-100 peer-checked:scale-100 transition-all -z-10"></span>
+</label>
+<label class="cursor-pointer flex-1 text-center relative z-10 group">
+<input class="peer sr-only" name="preset" type="radio"/>
+<span class="block w-full py-1.5 text-xs font-bold text-slate-500 peer-checked:text-slate-900 transition-colors">Ultra</span>
+<span class="absolute inset-0 bg-white rounded-full shadow-sm scale-90 opacity-0 peer-checked:opacity-100 peer-checked:scale-100 transition-all -z-10"></span>
+</label>
+</div>
+</div>
+<!-- Scrollable Settings -->
+<div class="overflow-y-auto p-6 space-y-8 custom-scrollbar">
+<!-- Lighting Section -->
+<section class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">light_mode</span>
+<h3 class="text-xs font-bold uppercase tracking-widest text-slate-900">Lighting Engine</h3>
+</div>
+<!-- Global Illumination -->
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="text-sm font-semibold text-slate-800">Global Illumination</label>
+<span class="text-xs font-mono font-bold bg-primary px-1.5 rounded text-slate-900 group-hover:bg-primary/80 transition-colors">85%</span>
+</div>
+<div class="relative w-full h-6 flex items-center">
+<input class="absolute z-20 opacity-0 w-full h-full cursor-pointer peer" max="100" min="0" type="range" value="85"/>
+<div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden relative z-10 pointer-events-none">
+<div class="absolute top-0 left-0 h-full bg-slate-900 w-[85%] peer-hover:bg-primary transition-colors"></div>
+</div>
+<div class="absolute left-[85%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-slate-900 rounded-full z-10 shadow pointer-events-none peer-hover:border-primary peer-hover:scale-110 transition-transform"></div>
+</div>
+</div>
+<!-- Reflections -->
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="text-sm font-semibold text-slate-800">Ray-Traced Reflections</label>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-red-500 font-bold uppercase hidden group-hover:inline-block">-12 FPS</span>
+<span class="text-xs font-mono font-bold bg-slate-200 px-1.5 rounded text-slate-900 group-hover:bg-primary transition-colors">High</span>
+</div>
+</div>
+<div class="relative w-full h-6 flex items-center">
+<input class="absolute z-20 opacity-0 w-full h-full cursor-pointer peer" max="3" min="0" type="range" value="2"/>
+<div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden relative z-10 pointer-events-none">
+<div class="absolute top-0 left-0 h-full bg-slate-900 w-[66%] peer-hover:bg-primary transition-colors"></div>
+</div>
+<div class="absolute left-[66%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-slate-900 rounded-full z-10 shadow pointer-events-none peer-hover:border-primary peer-hover:scale-110 transition-transform"></div>
+</div>
+</div>
+</section>
+<!-- Divider -->
+<div class="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+<!-- Environment Section -->
+<section class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">water_drop</span>
+<h3 class="text-xs font-bold uppercase tracking-widest text-slate-900">Environment</h3>
+</div>
+<!-- Water Quality -->
+<div class="group p-3 rounded-lg hover:bg-white/50 transition-colors border border-transparent hover:border-primary/30">
+<div class="flex justify-between items-center mb-2">
+<div class="flex flex-col">
+<label class="text-sm font-semibold text-slate-800">Water Caustics</label>
+<span class="text-[10px] text-slate-500">Real-time light refraction</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<!-- Volumetric Clouds -->
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="text-sm font-semibold text-slate-800">Volumetric Clouds</label>
+<span class="text-xs font-mono font-bold bg-slate-200 px-1.5 rounded text-slate-900 group-hover:bg-primary transition-colors">Ultra</span>
+</div>
+<div class="relative w-full h-6 flex items-center">
+<input class="absolute z-20 opacity-0 w-full h-full cursor-pointer peer" max="3" min="0" type="range" value="3"/>
+<div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden relative z-10 pointer-events-none">
+<div class="absolute top-0 left-0 h-full bg-slate-900 w-[100%] peer-hover:bg-primary transition-colors"></div>
+</div>
+<div class="absolute left-[100%] ml-[-16px] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-slate-900 rounded-full z-10 shadow pointer-events-none peer-hover:border-primary peer-hover:scale-110 transition-transform"></div>
+</div>
+</div>
+</section>
+<!-- Divider -->
+<div class="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+<!-- Textures Section -->
+<section class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">texture</span>
+<h3 class="text-xs font-bold uppercase tracking-widest text-slate-900">Surface Detail</h3>
+</div>
+<!-- PBR Resolution -->
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="text-sm font-semibold text-slate-800">PBR Resolution</label>
+<span class="text-xs font-mono font-bold bg-slate-200 px-1.5 rounded text-slate-900 group-hover:bg-primary transition-colors">1024x</span>
+</div>
+<!-- Segmented Control visualizer for range -->
+<div class="flex justify-between text-[10px] font-medium text-slate-400 mb-1 px-1">
+<span>256x</span>
+<span>512x</span>
+<span>1024x</span>
+<span>2048x</span>
+</div>
+<div class="relative w-full h-6 flex items-center">
+<input class="absolute z-20 opacity-0 w-full h-full cursor-pointer peer" max="4" min="1" type="range" value="3"/>
+<div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden relative z-10 pointer-events-none">
+<!-- Stops for range visual -->
+<div class="absolute w-full h-full flex justify-between px-0.5 items-center">
+<div class="w-1 h-1 bg-slate-400 rounded-full"></div>
+<div class="w-1 h-1 bg-slate-400 rounded-full"></div>
+<div class="w-1 h-1 bg-slate-400 rounded-full"></div>
+<div class="w-1 h-1 bg-slate-400 rounded-full"></div>
+</div>
+<div class="absolute top-0 left-0 h-full bg-slate-900 w-[66%] peer-hover:bg-primary transition-colors"></div>
+</div>
+<div class="absolute left-[66%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-slate-900 rounded-full z-10 shadow pointer-events-none peer-hover:border-primary peer-hover:scale-110 transition-transform"></div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Actions -->
+<div class="p-6 border-t border-slate-200/50 bg-white/40 backdrop-blur-md">
+<div class="flex gap-3">
+<button class="flex-1 bg-primary text-slate-900 font-bold py-3 px-4 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all text-sm flex items-center justify-center gap-2 group">
+<span>Apply Changes</span>
+<span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="aspect-square bg-slate-100 text-slate-600 font-bold p-3 rounded-full hover:bg-slate-200 transition-colors flex items-center justify-center tooltip-trigger" title="Reset Defaults">
+<span class="material-symbols-outlined">restart_alt</span>
+</button>
+</div>
+<p class="text-[10px] text-center mt-3 text-slate-500">Changes may require restart to take full effect.</p>
+</div>
+</div>
+<!-- Side Floating Metrics (Decorative) -->
+<div class="hidden xl:flex flex-col gap-4 absolute right-8 top-1/2 -translate-y-1/2 pointer-events-auto">
+<div class="glass-panel p-4 rounded-2xl w-48 border border-white/40">
+<div class="flex items-center gap-2 mb-2 text-slate-500">
+<span class="material-symbols-outlined text-sm">speed</span>
+<span class="text-xs font-bold uppercase">Performance</span>
+</div>
+<div class="text-3xl font-black text-slate-900 mb-1">62 <span class="text-sm font-medium text-slate-500">FPS</span></div>
+<div class="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full w-[60%] bg-green-500"></div>
+</div>
+<div class="mt-2 text-[10px] text-slate-500">Target: 60 FPS (Stable)</div>
+</div>
+<div class="glass-panel p-4 rounded-2xl w-48 border border-white/40">
+<div class="flex items-center gap-2 mb-2 text-slate-500">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span class="text-xs font-bold uppercase">GPU Load</span>
+</div>
+<div class="text-3xl font-black text-slate-900 mb-1">89%</div>
+<div class="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full w-[89%] bg-primary"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
